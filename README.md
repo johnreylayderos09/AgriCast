@@ -18,8 +18,6 @@ Crop Survivability Prediction → ML-powered predictions for crop adaptability
 
 Region-Based Recommendations → Tailored suggestions based on location & climate
 
-Data Visualization → Graphs and charts for soil–crop compatibility
-
 📌 Use Cases
 
 Farmers → Optimize crop selection for maximum yield
