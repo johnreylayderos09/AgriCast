@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/weather.js": { "maxDuration": 10 },
+    "api/geocoding.js": { "maxDuration": 10 },
+    "api/health.js": { "maxDuration": 5 },
+    "api/predict.js": { "maxDuration": 30 }
+  }
+}
