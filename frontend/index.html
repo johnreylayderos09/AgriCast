@@ -109,25 +109,6 @@
                             <!-- Dynamic reasoning content -->
                         </div>
                     </div>
-                                <div id="results" style="display: none;">
-                    <div class="weather-summary" id="weather-summary" style="display: none;">
-                        <h4 style="color: var(--primary-green); margin-bottom: 10px;">🌤️ Current Weather</h4>
-                        <div class="weather-grid">
-                            <div class="weather-item">
-                                <span class="weather-icon" id="weather-icon">☀️</span>
-                                <div>
-                                    <div class="weather-main" id="weather-main">Sunny</div>
-                                    <div class="weather-desc" id="weather-desc">Clear sky</div>
-                                </div>
-                            </div>
-                            <div class="weather-details">
-                                <div><strong>Location:</strong> <span id="current-location">---</span></div>
-                                <div><strong>Feels like:</strong> <span id="feels-like">---</span>°C</div>
-                                <div><strong>Humidity:</strong> <span id="humidity">---</span>%</div>
-                            </div>
-                        </div>
-                    </div>
-
             </div>
 
             <div class="results-panel">
@@ -145,6 +126,25 @@
                     <div class="spinner"></div>
                     <p>Running multi-system prediction analysis...</p>
                 </div>
+
+                <div id="results" style="display: none;">
+                    <div class="weather-summary" id="weather-summary" style="display: none;">
+                        <h4 style="color: var(--primary-green); margin-bottom: 10px;">🌤️ Current Weather</h4>
+                        <div class="weather-grid">
+                            <div class="weather-item">
+                                <span class="weather-icon" id="weather-icon">☀️</span>
+                                <div>
+                                    <div class="weather-main" id="weather-main">Sunny</div>
+                                    <div class="weather-desc" id="weather-desc">Clear sky</div>
+                                </div>
+                            </div>
+                            <div class="weather-details">
+                                <div><strong>Location:</strong> <span id="current-location">---</span></div>
+                                <div><strong>Feels like:</strong> <span id="feels-like">---</span>°C</div>
+                                <div><strong>Humidity:</strong> <span id="humidity">---</span>%</div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="prediction-card fade-in">
                         <div class="prediction-score" id="score">85%</div>
