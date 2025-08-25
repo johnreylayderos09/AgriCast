@@ -258,66 +258,33 @@ async function runPrediction() {
         }
     }
     
-    // Strategy 2: Try Generative AI (Vercel function)
-    if (!predictionResult && systemStatus.generativeAI) {
-        try {
-            showClimateStatus('🤖 Running AI assistant prediction...', 'loading');
-            console.log('Attempting generative AI prediction...');
-            
-            const aiResponse = await makeApiRequest(`${CONFIG.VERCEL_API_BASE_URL}/predict`, {
-                method: 'POST',
-                body: JSON.stringify(inputs)
-            });
+    if (!predictionResult) {
+  try {
+    showClimateStatus('🤖 Fetching deep AI analysis...', 'loading');
 
-            console.log('Generative AI Response:', aiResponse);
+    const response = await fetch('/api/chatgpt-analysis', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(inputs)
+    });
 
-            // Enhanced Generative AI prediction snippet with deeper analysis for reasoning
-            if (aiResponse && (aiResponse.success || aiResponse.recommendations)) {
-                // Construct deeper reasoning based on inputs and AI output
-                const reasoningDetails = [];
-            
-                reasoningDetails.push(`The soil pH level of ${inputs.pH} indicates that the soil is ${inputs.pH < 6 ? 'slightly acidic' : inputs.pH > 7 ? 'slightly alkaline' : 'neutral'}, which affects nutrient availability.`);
-                
-                if (inputs.N < 100) {
-                    reasoningDetails.push(`Low nitrogen (${inputs.N} ppm) levels may limit vegetative growth; consider nitrogen fertilization.`);
-                } else if (inputs.N > 200) {
-                    reasoningDetails.push(`High nitrogen (${inputs.N} ppm) might lead to excessive foliage but poor fruiting.`);
-                }
-            
-                if (inputs.P < 50) {
-                    reasoningDetails.push(`Phosphorus level is low (${inputs.P} ppm), potentially restricting root development.`);
-                }
-            
-                if (inputs.K < 150) {
-                    reasoningDetails.push(`Potassium at ${inputs.K} ppm is below optimal, affecting disease resistance and yield.`);
-                }
-            
-                reasoningDetails.push(`The temperature (${inputs.temperature}°C) and estimated annual rainfall (${inputs.rainfall} mm) indicate a ${inputs.temperature > 30 ? 'hot' : 'moderate'} climate with ${inputs.rainfall > 1500 ? 'high' : 'moderate'} precipitation, influencing crop suitability.`);
-                
-                reasoningDetails.push('Based on these factors and AI model analysis, the recommended crops are selected for optimal growth and yield.');
-                
-                predictionResult = {
-                    score: Math.round(aiResponse.confidence || 80),
-                    soilHealth: calculateSoilHealthFromInputs(inputs),
-                    recommendedCrops: (aiResponse.recommendations || []).map(crop => ({
-                        emoji: crop.emoji || '🌱',
-                        name: crop.crop || crop.name || 'Unknown',
-                        compatibility: Math.round(crop.probability || crop.compatibility || 0)
-                    })),
-                    farmingAdvice: aiResponse.farming_advice || aiResponse.advice || [],
-                    reasoning: reasoningDetails.join(' ')
-                };
-                
-                usedMethod = 'generative_ai';
-                showClimateStatus('✅ AI assistant prediction completed!', 'success');
-            }
+    const data = await response.json();
 
-        } catch (error) {
-            console.warn('Generative AI prediction failed:', error);
-            showClimateStatus('⚠️ AI assistant failed, using rule-based system...', 'warning');
-        }
+    if (data.reasoning) {
+      predictionResult = predictionResult || {};
+      predictionResult.reasoning = data.reasoning;
+    } else {
+      predictionResult.reasoning = 'AI reasoning not available.';
     }
-    
+
+    showClimateStatus('✅ Deep AI analysis retrieved!', 'success');
+
+  } catch (e) {
+    console.warn('Deep AI analysis failed:', e);
+    showClimateStatus('⚠️ Deep AI analysis failed', 'warning');
+    predictionResult.reasoning = 'Failed to get AI analysis.';
+  }
+}    
     // Strategy 3: Fallback to rule-based system
     if (!predictionResult) {
         try {
